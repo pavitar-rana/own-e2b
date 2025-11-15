@@ -1,0 +1,20 @@
+[
+  {
+    "ip": "172.16.0.2",
+    "tap": "",
+    "mac": "",
+    "status": "allocated"
+  },
+  {
+    "ip": "172.16.0.3",
+    "tap": "",
+    "mac": "",
+    "status": "allocated"
+  },
+  {
+    "ip": "172.16.0.4",
+    "tap": "",
+    "mac": "",
+    "status": "allocated"
+  }
+]
