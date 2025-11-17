@@ -11,12 +11,12 @@ export const connectSSH = (host: string) => {
         // Check if we already have a ready connection for THIS host
         const existing = connections.get(host);
         if (existing && existing.isReady) {
-            console.log(`♻️  Reusing existing SSH connection to ${host}`);
+            console.log(`Reusing existing SSH connection to ${host}`);
             return resolve(existing.conn);
         }
 
         // Create new connection for this host
-        console.log(`🔌 Creating new SSH connection to ${host}`);
+        console.log(`Creating new SSH connection to ${host}`);
         const conn = new Client();
 
         // Store in map immediately (not ready yet)
@@ -25,7 +25,7 @@ export const connectSSH = (host: string) => {
         conn.removeAllListeners();
 
         conn.on("ready", () => {
-            console.log(`✅ SSH Client ready for ${host}`);
+            console.log(`SSH Client ready for ${host}`);
             const entry = connections.get(host);
             if (entry) {
                 entry.isReady = true;
@@ -33,13 +33,13 @@ export const connectSSH = (host: string) => {
             resolve(conn);
         })
             .on("error", (err) => {
-                console.error(`❌ SSH Connection error for ${host}:`, err.message);
+                console.error(`SSH Connection error for ${host}:`, err.message);
                 // Remove failed connection
                 connections.delete(host);
                 reject(new Error(`Failed to connect to SSH: ${err.message}`));
             })
             .on("close", () => {
-                console.log(`🔚 SSH connection closed for ${host}`);
+                console.log(`SSH connection closed for ${host}`);
                 connections.delete(host);
             })
             .connect({
@@ -59,7 +59,7 @@ export const disconnect = (host?: string) => {
         if (entry && entry.isReady) {
             entry.conn.end();
             connections.delete(host);
-            console.log(`🔚 SSH disconnected from ${host}`);
+            console.log(`SSH disconnected from ${host}`);
         }
     } else {
         // Disconnect all
@@ -69,7 +69,7 @@ export const disconnect = (host?: string) => {
             }
         }
         connections.clear();
-        console.log("🔚 All SSH connections disconnected");
+        console.log("All SSH connections disconnected");
     }
 };
 
