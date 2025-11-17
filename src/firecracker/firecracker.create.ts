@@ -1,19 +1,17 @@
 import { createId } from "@paralleldrive/cuid2";
 import { execSync } from "child_process";
 import {
-    bootSetup,
-    configSetup,
-    startInstance,
-} from "../lib/bootSetupHelper.ts";
-import { attemptSSHConnection } from "../lib/connectSSH.ts";
-import {
     generateVmIp,
     macFromCuid,
     HOST_GATEWAY_IP,
     setupTapInterface,
-} from "../lib/preVmConfig.ts";
-import { VmConfigType, clientType, IPConfig } from "../lib/types.ts";
-import { setupSocket } from "../lib/vmConfigHelper.ts";
+    setupSocket,
+    attemptSSHConnection,
+    bootSetup,
+    configSetup,
+    startInstance,
+} from "../firecracker/index.ts";
+import type { VmConfigType, clientType, IPConfig } from "../lib/types.ts";
 import { createFirecrackerClient } from "./index.ts";
 
 export const createFireCracker = async (config: VmConfigType) => {

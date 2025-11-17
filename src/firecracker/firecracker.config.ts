@@ -1,4 +1,4 @@
-import { VmConfigType } from "../lib/types.ts";
+import type { VmConfigType } from "../lib/types.ts";
 
 export const configSetup = async (client: any, config: VmConfigType) => {
     await client.put("/machine-config", {

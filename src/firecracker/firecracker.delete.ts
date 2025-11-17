@@ -1,7 +1,7 @@
 // index-stateful.ts
 import dotenv from "dotenv";
 import { execSync } from "child_process";
-import { clientType } from "../lib/types.ts";
+import type { clientType } from "../lib/types.ts";
 import { createFirecrackerClient } from "./index.ts";
 import { getRedisClient } from "../services/redis/index.ts";
 import { disconnectSSH } from "../services/ssh/index.ts";

@@ -4,9 +4,11 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import express from "express";
-import { createFireCracker, deleteFireCracker } from "./firecracker/index.ts";
-
-import { attemptSSHConnection } from "./lib/connectSSH.ts";
+import {
+    createFireCracker,
+    deleteFireCracker,
+    attemptSSHConnection,
+} from "./firecracker/index.ts";
 import { createDir, runCommand, writeFile } from "./services/ssh/index.ts";
 import { prisma } from "./lib/prisma.ts";
 import cors from "cors";

@@ -1,4 +1,4 @@
-import { IPConfig, VmConfigType } from "../lib/types.ts";
+import type { IPConfig, VmConfigType } from "../lib/types.ts";
 
 export const buildIpBootParam = (config: IPConfig): string => {
     const { vmIP, gateway, netmask } = config;

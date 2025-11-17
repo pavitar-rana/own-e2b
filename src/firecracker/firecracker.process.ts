@@ -1,8 +1,8 @@
 // vmConfigHelper.ts
 import { exec, execSync, spawn } from "child_process";
-import { delay } from "./delayHelper.ts";
 import fs from "fs";
 import { getRedisClient } from "../services/redis/index.ts";
+import { delay } from "../lib/delayHelper.ts";
 
 const redisClient = await getRedisClient();
 
