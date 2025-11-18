@@ -7,16 +7,11 @@ import { delay } from "../lib/delayHelper.ts";
 const redisClient = await getRedisClient();
 
 export const setupSocket = async (api_socket: string, id: string) => {
-    const fc = spawn(
-        "sudo",
-        ["/home/pavitar/firecracker", "--api-sock", api_socket],
-        {
-            stdio: ["ignore", "inherit", "inherit"],
-            detached: true,
-        },
-    );
+    const fc = spawn("sudo", ["/home/pavitar/firecracker", "--api-sock", api_socket], {
+        stdio: ["ignore", "inherit", "inherit"],
+        detached: true,
+    });
 
-    // detach so process continues if Node exits
     fc.unref();
 
     const pid = -fc.pid;
@@ -33,7 +28,6 @@ export const setupSocket = async (api_socket: string, id: string) => {
 
     await redisClient.set(key, JSON.stringify(arr));
 
-    // wait for socket to appear
     const maxWait = 5000;
     const interval = 100;
     const start = Date.now();
@@ -54,6 +48,5 @@ export const setupSocket = async (api_socket: string, id: string) => {
         throw err;
     }
 
-    // done
     return;
 };

@@ -6,18 +6,15 @@ export const connectSSH = (host: string) => {
     return new Promise((resolve, reject) => {
         if (!host) return reject("Host not provided");
 
-        // Check if we already have a ready connection for THIS host
         const existing = connections.get(host);
         if (existing && existing.isReady) {
             console.log(`Reusing existing SSH connection to ${host}`);
             return resolve(existing.conn);
         }
 
-        // Create new connection for this host
         console.log(`Creating new SSH connection to ${host}`);
         const conn = new Client();
 
-        // Store in map immediately (not ready yet)
         connections.set(host, { conn, isReady: false });
 
         conn.removeAllListeners();
@@ -32,7 +29,6 @@ export const connectSSH = (host: string) => {
         })
             .on("error", (err) => {
                 console.error(`SSH Connection error for ${host}:`, err.message);
-                // Remove failed connection
                 connections.delete(host);
                 reject(new Error(`Failed to connect to SSH: ${err.message}`));
             })
@@ -45,14 +41,13 @@ export const connectSSH = (host: string) => {
                 port: 22,
                 username: "root",
                 privateKey: readFileSync("/home/pavitar/.ssh/id_rsa"),
-                readyTimeout: 30000, // 30 second timeout
+                readyTimeout: 30000,
             });
     });
 };
 
 export const disconnectSSH = (host?: string) => {
     if (host) {
-        // Disconnect specific host
         const entry = connections.get(host);
         if (entry && entry.isReady) {
             entry.conn.end();
@@ -60,7 +55,6 @@ export const disconnectSSH = (host?: string) => {
             console.log(`SSH disconnected from ${host}`);
         }
     } else {
-        // Disconnect all
         for (const [host, entry] of connections.entries()) {
             if (entry.isReady) {
                 entry.conn.end();

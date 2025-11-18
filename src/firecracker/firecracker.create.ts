@@ -22,7 +22,6 @@ export const createFireCracker = async (config: VmConfigType) => {
     const id = createId();
     console.log("Creating VM with ID: ", id);
 
-    // Create per-VM rootfs copy to prevent filesystem corruption
     const vmRootfs = `/tmp/vm-${id}.ext4`;
     console.log(`Creating VM-specific rootfs: ${vmRootfs}`);
     console.log(`Copying from: ${config.rootfsPath}`);
@@ -92,6 +91,6 @@ export const createFireCracker = async (config: VmConfigType) => {
         socket: api_socket,
         vcpuCount: config.vcpuCount,
         memSize: config.memSize,
-        rootfsPath: vmRootfs, // Return this so we can delete it later
+        rootfsPath: vmRootfs,
     };
 };

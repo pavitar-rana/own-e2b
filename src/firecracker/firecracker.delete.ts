@@ -1,4 +1,3 @@
-// index-stateful.ts
 import dotenv from "dotenv";
 import { execSync } from "child_process";
 import type { clientType } from "../lib/types.ts";
@@ -8,19 +7,12 @@ import { disconnectSSH } from "../services/ssh/index.ts";
 
 dotenv.config();
 
-export const deleteFireCracker = async (
-    id: string,
-    ip: string,
-    rootfsPath?: string,
-    projectId?: string,
-) => {
+export const deleteFireCracker = async (id: string, ip: string, rootfsPath?: string, projectId?: string) => {
     const redisClient = await getRedisClient();
     const api_socket = `/tmp/firecracker-${id}.socket`;
     const client: clientType = createFirecrackerClient(api_socket);
 
     console.log("Deleting VM with IP:", ip);
-
-    // Disconnect SSH for this specific IP
 
     disconnectSSH(ip);
 
@@ -28,7 +20,7 @@ export const deleteFireCracker = async (
 
     try {
         await client.put("/actions", { action_type: "SendCtrlAltDel" });
-        await new Promise((r) => setTimeout(r, 2000)); // Wait for shutdown
+        await new Promise((r) => setTimeout(r, 2000));
     } catch (err) {
         console.error("CtrlAltDel failed:", err);
     }
@@ -56,35 +48,29 @@ export const deleteFireCracker = async (
         console.error("Error removing Firecracker process:", err);
     }
 
-    // Clean up socket file (needs sudo since firecracker was run with sudo)
     try {
         console.log(`Cleaning up socket: ${api_socket}`);
         execSync(`sudo rm -f ${api_socket}`);
     } catch (err: any) {
         console.error("Error removing socket:", err?.message || err);
-        // Non-fatal, continue with cleanup
     }
 
-    // Clean up VM-specific rootfs
     if (rootfsPath) {
         try {
-            console.log(` Deleting VM rootfs: ${rootfsPath}`);
+            console.log(`Deleting VM rootfs: ${rootfsPath}`);
             execSync(`rm -f ${rootfsPath}`);
             console.log(`Rootfs deleted successfully`);
         } catch (err: any) {
             console.error("Error removing VM rootfs:", err?.message || err);
-            // Non-fatal, continue
         }
     }
 
-    // Clean up TAP interface
     const tap = `tap_${id.slice(0, 8)}`;
     try {
         console.log(`Cleaning up TAP interface: ${tap}`);
         execSync(`sudo ip link del ${tap} 2>/dev/null || true`);
     } catch (err: any) {
         console.error("Error removing TAP interface:", err?.message || err);
-        // Non-fatal
     }
 
     console.log(`VM ${id} cleanup completed`);
