@@ -27,7 +27,6 @@ export const createFireCracker = async (config: VmConfigType) => {
     console.log(`Copying from: ${config.rootfsPath}`);
 
     try {
-        // Use cp for fast copy
         execSync(`cp "${config.rootfsPath}" "${vmRootfs}"`);
         console.log(`Rootfs copy created successfully`);
     } catch (err) {
@@ -75,7 +74,6 @@ export const createFireCracker = async (config: VmConfigType) => {
     await configSetup(client, config);
     await startInstance(client);
 
-    // wait for SSH
     const maxRetries = config.sshMaxRetries ?? 10;
     const baseDelay = config.sshBaseDelayMs ?? 1000;
     await attemptSSHConnection({

@@ -115,10 +115,6 @@ const writeFileController: RequestHandler = async (req, res) => {
         baseDelay: 1000,
     });
 
-    // await new Promise((r) => setTimeout(r, 1000));
-
-    // const result = await runCommand(command);
-    // Join the path properly to ensure it's under /root/{projectId}
     const fullPath = `/root/${projectId}/${path}`.replace(/\/+/g, "/");
     console.log("writing files for  path : ", fullPath);
 

@@ -1,4 +1,3 @@
-// vmConfigHelper.ts
 import { exec, execSync, spawn } from "child_process";
 import fs from "fs";
 import { getRedisClient } from "../services/redis/index.ts";
@@ -7,10 +6,14 @@ import { delay } from "../lib/delayHelper.ts";
 const redisClient = await getRedisClient();
 
 export const setupSocket = async (api_socket: string, id: string) => {
-    const fc = spawn("sudo", ["/home/pavitar/firecracker", "--api-sock", api_socket], {
-        stdio: ["ignore", "inherit", "inherit"],
-        detached: true,
-    });
+    const fc = spawn(
+        "sudo",
+        ["/home/pavitar/firecracker", "--api-sock", api_socket],
+        {
+            stdio: ["ignore", "inherit", "inherit"],
+            detached: true,
+        },
+    );
 
     fc.unref();
 
